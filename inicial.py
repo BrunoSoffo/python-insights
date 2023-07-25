@@ -1,7 +1,9 @@
-import pandas
+import pandas as pd
+import plotly.express as px
+
 # manipulador de base de dados
 
-tabela = pandas.read_csv("cancelamentos.csv")
+tabela = pd.read_csv("cancelamentos.csv")
 print(tabela)
 
 tabela = tabela.dropna()
@@ -21,3 +23,14 @@ print(tabela["duracao_contrato"].value_counts(normalize=True))
 
 print(tabela.groupby("duracao_contrato").mean())
 print(tabela.groupby("assinatura").mean())
+
+tabela = tabela[tabela["duracao_contrato"]!="Monthly"]
+#fazendo a análise dos dados sem os contratos mensais
+display(tabela["cancelou"].value_counts())
+display(tabela["cancelou"].value_counts(normalize=True))
+
+display(tabela["assinatura"].value_counts(normalize=True))
+display(tabela.groupby("assinatura").mean(numeric_only=True))
+
+grafico = px.histogram(tabela, x="assinatura", color="cancelou")
+grafico.show()
